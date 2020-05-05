@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello CategorieController!{% endblock %}
+
+{% block body %}
+    <div class="mb-4">
+        <ul class="list-group">
+            {% for categorie in categories %}
+                <li class="list-group-item">{{ categorie.nom }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+
+{% endblock %}

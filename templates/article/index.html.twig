@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello ArticleController!{% endblock %}
+
+{% block body %}
+{#    Affichage de la liste des articles #}
+    <!--comm html -->
+    <table class="table table-striped">
+        <tr>
+            <th>Libellé</th>
+            <th>Prix</th>
+            <th>Marque</th>
+            <th>Catégorie</th>
+            <th>Action</th>
+        </tr>
+        {% for art in articles %}
+            <tr>
+                <td>{{ art.designation }}</td>
+                <td>{{ art.prix }}</td>
+                <td>{{ art.marque }}</td>
+                <td>{{ art.categorie.nom }}</td>
+                <td><a href="{{ path('delete', {'id_art': art.id}) }}">Delete</a></td>
+            </tr>
+        {% endfor %}
+    </table>
+    {#    Fin affichage de la liste des articles #}
+
+
+
+{% endblock %}

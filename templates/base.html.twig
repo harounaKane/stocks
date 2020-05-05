@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="fr">
+    <head>
+        <meta charset="UTF-8">
+        <title>{% block title %}Welcome!{% endblock %} - stock</title>
+        {% block stylesheets %}
+            <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+        {% endblock %}
+         </head>
+    <body>
+        <header class="jumbotron">
+            <nav>
+                <a class="btn btn-primary" href="{{ path('home') }}">Accueil</a>
+                <a class="btn btn-primary" href="{{ path('article') }}">Article</a>
+                <a class="btn btn-primary" href="{{ path('categorie') }}">Catégorie</a>
+                <a class="btn btn-primary" href="{{ path('saveCat') }}">create Cat</a>
+            </nav>
+        </header>
+
+        <div class="w-100">
+            {% for message in app.flashes("warning") %}
+                <div class="alert alert-warning">{{ message }}</div>
+            {% endfor %}
+
+            {% for message in app.flashes("success") %}
+                <div class="alert alert-success">{{ message }}</div>
+            {% endfor %}
+        </div>
+
+        {% block body %}{% endblock %}
+        <footer class="d-flex justify-content-center jumbotron my-3">
+            &copy; Copyrigth - {{ '' | date('Y') }} - AFPA Créteil
+        </footer>
+        {% block javascripts %}{% endblock %}
+    </body>
+</html>
