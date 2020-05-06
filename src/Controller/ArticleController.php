@@ -3,9 +3,11 @@
 namespace App\Controller;
 
 use App\Entity\Article;
+use App\form\FormArticle;
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -13,51 +15,76 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class ArticleController extends AbstractController
 {
+
+    private $manager;
+
+    public function __construct( EntityManagerInterface $manager )
+    {
+        $this->manager = $manager;
+    }
+
+
     /**
      * @Route("liste_article", name="article")
      */
-    public function index(EntityManagerInterface $entityManager)
+    public function index()
     {
-        $articles = $entityManager->getRepository(Article::class)->findAll();
+        $articles = $this->manager->getRepository(Article::class)->findAll();
 
         return $this->render('article/index.html.twig', compact("articles"));
     }
 
     /**
-     * @Route("create", name="create")
+     * @Route("create", name="saveArt")
      */
-    public function create(EntityManagerInterface $entityManager){
+    public function create(Request $request)
+    {
+
         $article = new Article();
 
-        $article->setDesignation("stylo");
-        $article->setPrix(5.3);
-        $article->setMarque("Truc");
+        $form = $this->createForm(FormArticle::class, $article);
 
-        try{
-            $entityManager->persist($article);
-            $entityManager->flush();
-            $this->addFlash(
-                "success",
-                "Insertion réussie  !!!!"
-            );
-        }catch (UniqueConstraintViolationException $u){
-            $this->addFlash(
-                "warning",
-                "Impossible de dupliquer le champ ". $article->getDesignation()
-            );
+        $form->handleRequest($request);
+
+        if( $form->isSubmitted() && $form->isValid() ){
+
+            try {
+                $this->manager->persist($article);
+                $this->manager->flush();
+
+                $this->addFlash(
+                    "success",
+                    "Article \"". $article->getDesignation() ."\" ajouté avec succès"
+                );
+                return $this->redirectToRoute("article");
+
+            } catch (UniqueConstraintViolationException $u){
+                $this->addFlash(
+                    "warning",
+                    "l'article \"". $article->getDesignation() ."\" éxiste déjà"
+                );
+            }
         }
 
-        return $this->redirectToRoute("article");
+        return $this->render("article/form.html.twig", ["form" => $form->createView()]);
     }
 
     /**
      * @Route("delete/{id_art}", name="delete")
      */
-    public function delete($id_art, EntityManagerInterface $entityManager){
-        $art = $entityManager->getRepository(Article::class)->find($id_art);
+    public function delete($id_art){
+        $art = $this->manager->getRepository(Article::class)->find($id_art);
 
-        $entityManager->remove($art);
-        $entityManager->flush();
+        if( empty($art) ){
+            $this->addFlash(
+                "warning",
+                " Suppression impossible !!"
+            );
+            return $this->redirectToRoute("article");
+        }
+
+        $this->manager->remove($art);
+        $this->manager->flush();
 
         return $this->redirectToRoute("article");
     }

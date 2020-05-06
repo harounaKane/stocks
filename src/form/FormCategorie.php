@@ -17,10 +17,13 @@ class FormCategorie extends AbstractType
             ->add("nom", TextType::class, [
                 "attr" =>[
                     "placeholder" => "nom",
-                    "minlength" => 5
+                    "minlength" => 2,
+                    "maxlength" => 20
                 ]
             ])
-            ->add('description', TextareaType::class)
+            ->add('description', TextareaType::class, [
+                "required" => false
+            ])
             ->add("Ajouter", SubmitType::class)
         ;
     }

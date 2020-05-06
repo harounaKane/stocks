@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ArticleRepository")
@@ -19,11 +20,23 @@ class Article
 
     /**
      * @ORM\Column(type="string", length=20, unique=true)
+     * @Assert\Length(
+     *     min = 2,
+     *     max = 20,
+     *     minMessage = "tapez au minimum {{ limit }} caractères",
+     *     maxMessage = "tapez au maximum {{ limit }} caractères"
+     * )
      */
     private $designation;
 
     /**
      * @ORM\Column(type="float")
+     * @Assert\Range(
+     *     min = 0.5,
+     *     max = 1999,
+     *     minMessage = "Prix minimum est de {{ limit }} € ",
+     *     maxMessage = "Prix maximum est de {{ limit }} € "
+     * )
      */
     private $prix;
 

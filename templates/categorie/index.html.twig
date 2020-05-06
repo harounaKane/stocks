@@ -6,7 +6,11 @@
     <div class="mb-4">
         <ul class="list-group">
             {% for categorie in categories %}
-                <li class="list-group-item">{{ categorie.nom }}</li>
+                <li class="list-group-item">
+                    {{ categorie.nom }}
+                    <a href="{{ path('update', {"id_cat" : categorie.id }) }}"><i class="fa fa-edit"></i></a>
+                    <a href="{{ path('deleteCat', {"id_cat" : categorie.id }) }}"><i class="fa fa-trash"></i></a>
+                </li>
             {% endfor %}
         </ul>
     </div>
