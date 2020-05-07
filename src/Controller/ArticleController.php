@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Article;
 use App\form\FormArticle;
+use App\Repository\ArticleRepository;
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -27,9 +28,9 @@ class ArticleController extends AbstractController
     /**
      * @Route("liste_article", name="article")
      */
-    public function index()
+    public function index(ArticleRepository $repo)
     {
-        $articles = $this->manager->getRepository(Article::class)->findAll();
+        $articles = $repo->findAll();
 
         return $this->render('article/index.html.twig', compact("articles"));
     }

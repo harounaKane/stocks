@@ -3,14 +3,17 @@
 {% block title %}Hello CategorieController!{% endblock %}
 
 {% block body %}
+
     <div class="mb-4">
         <ul class="list-group">
             {% for categorie in categories %}
                 <li class="list-group-item">
-                    {{ categorie.nom }}
+                    {{ categorie.nom ~ ' ' ~ categorie.description }}
                     <a href="{{ path('update', {"id_cat" : categorie.id }) }}"><i class="fa fa-edit"></i></a>
                     <a href="{{ path('deleteCat', {"id_cat" : categorie.id }) }}"><i class="fa fa-trash"></i></a>
                 </li>
+            {% else %}
+                <p>Pas de catégories</p>
             {% endfor %}
         </ul>
     </div>

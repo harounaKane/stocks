@@ -31,7 +31,7 @@
 
         {% block body %}{% endblock %}
         <footer class="d-flex justify-content-center jumbotron my-3">
-            &copy; Copyrigth - {{ '' | date('Y') }} - AFPA Créteil
+            &copy; Copyrigth - {{ '' | date('Y') ~ ' - ' ~ auteur | upper }}
         </footer>
         {% block javascripts %}{% endblock %}
     </body>
