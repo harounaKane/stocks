@@ -11,12 +11,21 @@
     <body>
         <header class="jumbotron">
             <nav>
-                <a class="btn btn-primary" href="{{ path('home') }}">Accueil</a>
-                <a class="btn btn-primary" href="{{ path('article') }}">Article</a>
-                <a class="btn btn-primary" href="{{ path('categorie') }}">Catégorie</a>
-                <a class="btn btn-primary" href="{{ path('saveCat') }}">create Cat</a>
-                <a class="btn btn-primary" href="{{ path('saveArt') }}">create Art</a>
-                <a class="btn btn-primary" href="{{ path('user_index') }}">User</a>
+
+                {% if app.session.get("prenom") %}
+                    <a class="btn btn-primary" href="{{ path('home') }}">Accueil</a>
+                    <a class="btn btn-primary" href="{{ path('article') }}">Article</a>
+                    <a class="btn btn-primary" href="{{ path('categorie') }}">Catégorie</a>
+                    <a class="btn btn-primary" href="{{ path('saveCat') }}">create Cat</a>
+                    <a class="btn btn-primary" href="{{ path('saveArt') }}">create Art</a>
+                    <a class="btn btn-primary" href="{{ path('user_index') }}">User</a>
+
+                    <a class="btn btn-danger" href="{{ path('deconnexion_user') }}">Se deconnecter</a>
+                {% else %}
+                    <a class="btn btn-primary" href="{{ path('saveCat') }}">S'inscrire</a>
+                    <a class="btn btn-primary" href="{{ path('connexion_user') }}">Se connecter</a>
+                {% endif %}
+
             </nav>
         </header>
 
@@ -33,6 +42,9 @@
         {% block body %}{% endblock %}
         <footer class="d-flex justify-content-center jumbotron my-3">
             &copy; Copyrigth - {{ '' | date('Y') ~ ' - ' ~ auteur | upper }}
+                                                    {# auteur => variable global définit dans :
+                                                        config\package\twig.yaml
+                                                    #}
         </footer>
         {% block javascripts %}{% endblock %}
     </body>
